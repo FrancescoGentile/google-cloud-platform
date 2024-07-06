@@ -315,6 +315,66 @@ class Client:
             data = await response.json()
             return places.Place.from_api_format(data)
 
+    async def get_photo_uri(
+        self,
+        photo: places.Photo,
+        *,
+        max_width: int | None = None,
+        max_height: int | None = None,
+    ) -> str:
+        """Retrieves the uri of a photo of a place.
+
+        Args:
+            photo: The photo to retrieve.
+            max_width: The maximum desired width of the image. If the image is smaller
+                than this, the original image is returned. If the image is larger, it is
+                resized to fit the specified width while maintaining the original aspect
+                ratio. At least one of `max_width` and `max_height` must be provided, if
+                both are provided, the minimum of the two is used.
+            max_height: The maximum desired height of the image. If the image is smaller
+                than this, the original image is returned. If the image is larger, it is
+                resized to fit the specified height while maintaining the original
+                aspect ratio. At least one of `max_width` and `max_height` must be
+                provided, if both are provided, the minimum of the two is used.
+
+        Returns:
+            The URI of the photo.
+
+        Raises:
+            ValueError: If both `max_width` and `max_height` are `None`.
+            ValueError: If the maximum width is not in the range [1, 4800].
+            ValueError: If the maximum height is not in the range [1, 4800].
+            APIError: If the API returns an error.
+        """
+        if max_width is None and max_height is None:
+            msg = "At least one of max_width and max_height must be provided."
+            raise ValueError(msg)
+
+        if max_width is not None and not 1 <= max_width <= 4800:
+            msg = "The maximum width must be between 1 and 4800."
+            raise ValueError(msg)
+
+        if max_height is not None and not 1 <= max_height <= 4800:
+            msg = "The maximum height must be between 1 and 4800."
+            raise ValueError(msg)
+
+        name = photo.name.strip("/")
+        url = f"https://places.googleapis.com/v1/{name}/media"
+        headers = {"X-Goog-Api-Key": self._api_key}
+        parameters: dict[str, int | str] = {"skipHttpRedirect": "true"}
+        if max_width is not None:
+            parameters["maxWidthPx"] = max_width
+        elif max_height is not None:
+            parameters["maxHeightPx"] = max_height
+
+        async with self._session.get(url, headers=headers, params=parameters) as resp:
+            if resp.status != 200:
+                data = await resp.json()
+                raise APIError.from_api_response(resp.status, data)
+
+            data = await resp.json()
+            return data["photoUri"]
+
     # ----------------------------------------------------------------------- #
     # Magic Methods
     # ----------------------------------------------------------------------- #
