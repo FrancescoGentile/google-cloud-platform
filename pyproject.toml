@@ -1,0 +1,27 @@
+[project]
+name = "gcp"
+version = "0.0.1"
+description = "Google Cloud Platform API client for Python"
+authors = [
+    { name = "Francesco Gentile", email = "francesco.gentile@studenti.unitn.it" }
+]
+dependencies = [
+    "aiohttp>=3.9",
+    "pyserde>=0.16",
+    "typing-extensions>=4.12",
+    "python-dateutil",
+    "casefy",
+]
+readme = "README.md"
+requires-python = ">= 3.10"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.uv]
+dev-dependencies = [
+    "pre-commit>=3.7",
+    "ruff>=0.5",
+    "pyright",
+]
