@@ -364,7 +364,7 @@ class Client:
         parameters: dict[str, int | str] = {"skipHttpRedirect": "true"}
         if max_width is not None:
             parameters["maxWidthPx"] = max_width
-        elif max_height is not None:
+        if max_height is not None:
             parameters["maxHeightPx"] = max_height
 
         async with self._session.get(url, headers=headers, params=parameters) as resp:
