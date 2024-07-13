@@ -7,7 +7,6 @@ authors = [
 ]
 dependencies = [
     "aiohttp>=3",
-    "pyserde>=0.16",
     "typing-extensions>=4.12",
     "python-dateutil",
     "casefy",

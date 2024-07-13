@@ -11,7 +11,6 @@ from collections.abc import Iterable
 from typing import Any, TypeAlias
 
 import dateutil.parser
-import serde
 from casefy import casefy
 from typing_extensions import Self
 
@@ -61,7 +60,6 @@ class BusinessStatus(enum.Enum):
         return self.name
 
 
-@serde.serde
 @dataclasses.dataclass(frozen=True)
 class CircularArea:
     """A circular area to search for places.
@@ -102,7 +100,6 @@ class CircularArea:
         }
 
 
-@serde.serde
 @dataclasses.dataclass(frozen=True)
 class RectangularArea:
     """A rectangular area to search for places.
@@ -141,7 +138,6 @@ class RectangularArea:
 Area: TypeAlias = CircularArea | RectangularArea
 
 
-@serde.serde
 @dataclasses.dataclass(frozen=True)
 class LocalizedString:
     """A string associated with a language code."""
@@ -161,7 +157,6 @@ class LocalizedString:
         return {casefy.camelcase(key): value for key, value in data.items()}
 
 
-@serde.serde
 @dataclasses.dataclass(frozen=True)
 class AddressComponent:
     """The parts of an address."""
@@ -183,7 +178,7 @@ class AddressComponent:
         return {casefy.camelcase(key): value for key, value in data.items()}
 
 
-@serde.serde
+@dataclasses.dataclass(frozen=True)
 class PlusCode:
     """A plus code for a place."""
 
@@ -205,7 +200,6 @@ class PlusCode:
         }
 
 
-@serde.serde
 @dataclasses.dataclass(frozen=True)
 class OpeningHours:
     """The opening hours of a place.
@@ -272,7 +266,6 @@ class OpeningHours:
         return cls(periods, weekday_descriptions)
 
 
-@serde.serde
 @dataclasses.dataclass(frozen=True)
 class AuthorAttribution:
     """The author attribution for a given resource."""
@@ -293,7 +286,7 @@ class AuthorAttribution:
         return {casefy.camelcase(key): value for key, value in data.items()}
 
 
-@serde.serde
+@dataclasses.dataclass(frozen=True)
 class Photo:
     """A photo of a place."""
 
@@ -327,7 +320,6 @@ class Photo:
         }
 
 
-@serde.serde
 @dataclasses.dataclass(frozen=True)
 class Review:
     """A review of a place."""
@@ -364,7 +356,6 @@ class Review:
         return {casefy.camelcase(key): value for key, value in data.items()}
 
 
-@serde.serde
 @dataclasses.dataclass(frozen=True)
 class ParkingOptions:
     """The parking options for a place."""
@@ -389,7 +380,6 @@ class ParkingOptions:
         return {casefy.camelcase(key): value for key, value in data.items()}
 
 
-@serde.serde
 @dataclasses.dataclass(frozen=True)
 class PaymentOptions:
     """The payment options for a place."""
@@ -416,7 +406,6 @@ class PaymentOptions:
 # --------------------------------------------------------------------------- #
 
 
-@serde.serde
 @dataclasses.dataclass(frozen=True, repr=False)
 class Place:
     """Describes a place returned by the Google Maps API.
