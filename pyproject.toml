@@ -6,7 +6,7 @@ authors = [
     { name = "Francesco Gentile", email = "francesco.gentile@studenti.unitn.it" }
 ]
 dependencies = [
-    "aiohttp>=3.9",
+    "aiohttp>=3",
     "pyserde>=0.16",
     "typing-extensions>=4.12",
     "python-dateutil",
