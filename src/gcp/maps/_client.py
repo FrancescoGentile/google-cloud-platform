@@ -380,6 +380,10 @@ class Client:
     # ----------------------------------------------------------------------- #
 
     def __del__(self) -> None:
+        if not hasattr(self, "_session"):
+            # the constructor failed, so the session was never created
+            return
+
         try:
             loop = asyncio.get_event_loop()
             if loop.is_running():
